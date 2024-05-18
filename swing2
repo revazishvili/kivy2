@@ -1,0 +1,204 @@
+# 1. მარტივი ღილაკი ფიქსირებული ზომით
+from kivy.app import App
+from kivy.uix.button import Button
+from kivy.uix.boxlayout import BoxLayout
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(padding=20) # თავისუფალი სივრცე ფანჯრის კიდეებთან
+        btn = Button(text="დააჭირე მე!", 
+                     size_hint=(None, None), # ფიქსირებული ზომა
+                     width=200, height=50, # ზომები
+                     font_size=24,
+                     background_color=(1, 0, 0, 1),
+                     color=(1, 1, 1, 1))
+        layout.add_widget(btn)
+        return layout
+
+TestApp().run()
+
+# 2. ტექსტის ლეიბლი ფიქსირებული ზომით
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(padding=20)
+        lbl = Label(text="შევაფასოთ Kivy!",
+                    font_size=32, bold=True,
+                    size_hint=(None, None), # ფიქსირებული ზომა
+                    width=300, height=100) # ზომები
+        layout.add_widget(lbl)
+        return layout
+
+TestApp().run()
+
+# 3. BoxLayout ფიქსირებული ზომის ვიჯეტებით
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(orientation='vertical', padding=20)
+        btn1 = Button(text="ღილაკი 1", size_hint=(None, None), width=200, height=50)
+        lbl = Label(text="ლეიბლი", size_hint=(None, None), width=200, height=50)
+        btn2 = Button(text="ღილაკი 2", size_hint=(None, None), width=200, height=50)
+        layout.add_widget(btn1)
+        layout.add_widget(lbl)
+        layout.add_widget(btn2)
+        return layout
+
+TestApp().run()
+
+# 4. ფუნქციის გამოძახება ღილაკზე დაჭერისას
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+
+class TestApp(App):
+    def btn_press(self, instance):
+        instance.text = "დააჭირეთ"
+
+    def build(self):
+        layout = BoxLayout(padding=20)
+        btn = Button(text="დააჭირე მე!",
+                     size_hint=(None, None), width=200, height=50,
+                     font_size=24, on_press=self.btn_press)
+        layout.add_widget(btn)
+        return layout
+
+TestApp().run()
+
+# 5. TextInput ფიქსირებული ზომით
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(orientation='vertical', padding=20)
+        lbl = Label(text='შეიყვანეთ ტექსტი:', size_hint=(None, None), width=200, height=50)
+        txt = TextInput(font_size=24, multiline=False, size_hint=(None, None), width=300, height=100)
+        layout.add_widget(lbl)
+        layout.add_widget(txt)
+        return layout
+
+TestApp().run()
+
+# 6. სლაიდერი ფიქსირებული ზომის ლეიბლთან
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.slider import Slider
+from kivy.uix.label import Label
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(orientation='vertical', padding=20)
+        lbl = Label(text='0', size_hint=(None, None), width=100, height=50)
+        sld = Slider(min=0, max=100, value=0, size_hint=(None, None), width=300, height=50)
+        sld.bind(value=self.on_slider_value_change)
+        layout.add_widget(lbl)
+        layout.add_widget(sld)
+        return layout
+    
+    def on_slider_value_change(self, instance, value):
+        self.lbl.text = str(int(value))
+
+TestApp().run()
+
+# 7. ჩამოშლადი მენიუ ფიქსირებული ზომით
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.spinner import Spinner
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(padding=20)
+        spin = Spinner(text='აირჩიეთ ფერი',
+                        values=('წითელი', 'ლურჯი', 'მწვანე'),
+                        size_hint=(None, None), width=200, height=50)
+        layout.add_widget(spin)
+        return layout
+
+TestApp().run()
+
+# 8. ფაილის ჩატვირთვის დიალოგი ფიქსირებული ზომით
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.filechooser import FileChooserListView
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(orientation='vertical', padding=20)
+        self.file_chooser = FileChooserListView(size_hint=(1, 0.8)) # ფიქსირებული სიმაღლე
+        btn = Button(text="აირჩიეთ ფაილი", size_hint=(None, None), width=200, height=50, on_press=self.open_filechooser)
+        layout.add_widget(self.file_chooser)
+        layout.add_widget(btn)
+        return layout
+    
+    def open_filechooser(self, instance):
+        self.file_chooser.show_chooser()
+
+TestApp().run()
+
+# 9. ProgressBar ფიქსირებული ზომით
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.progressbar import ProgressBar
+from kivy.clock import Clock
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(padding=20)
+        self.pbar = ProgressBar(max=100, size_hint=(None, None), width=300, height=20)
+        layout.add_widget(self.pbar)
+        
+        # დავიწყოთ პროგრესის მიმდევრობა
+        self.progress_it(0)  
+        return layout
+    
+    def progress_it(self, dt):
+        # ეს ფუნქცია გამოიძახება ყოველ 1 წამში
+        if self.pbar.value >= 100:
+            # თუ პროგრესის ზოლი სრულადაა შევსებული, გავაჩეროთ მიმდევრობა
+            return False
+        
+        # წინააღმდეგ შემთხვევაში, გავზარდოთ პროგრესის მნიშვნელობა 10-ით
+        self.pbar.value += 10
+        
+        # დავნიშნოთ ფუნქციის გამოძახება კიდევ 1 წამში
+        Clock.schedule_once(self.progress_it, 1)
+
+TestApp().run()
+
+# 10. Pop-up ფანჯარა ფიქსირებული ზომით
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
+
+class TestApp(App):
+    def build(self):
+        layout = BoxLayout(padding=20)
+        btn = Button(text="გამოაჩინე Pop-up",
+                     size_hint=(None, None), width=200, height=50,
+                     on_press=self.show_popup)
+        layout.add_widget(btn)
+        return layout
+    
+    def show_popup(self, instance):
+        # შევქმნათ Pop-up ფანჯრის ობიექტი
+        popup = Popup(title='Pop-up ფანჯარა',
+                      content=Label(text='ეს არის Pop-up ფანჯარა'),
+                      size_hint=(None, None), size=(400, 200))
+        
+        # გამოვაჩინოთ Pop-up ფანჯარა
+        popup.open()
+
+TestApp().run()
